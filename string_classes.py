@@ -36,7 +36,8 @@ begin_aberto = []
 
 #NOTE analisa o caractere, individualmente e como cadeia, e retorna o token
 def get_token(character, num_character):
-    global mc_state, string_to_analyze, number_to_analyze, comment, coment_aberto, parenteses_aberto, begin_aberto
+    global mc_state, string_to_analyze, number_to_analyze, comment
+    global coment_aberto, parenteses_aberto, begin_aberto
 
     match(mc_state):
         #NOTE case header_state funcionando
@@ -44,6 +45,7 @@ def get_token(character, num_character):
             #conjuntos de caracteres
             if character in letter:
                 string_to_analyze = string_to_analyze + character
+                #print("eh letra, cadeia: " + string_to_analyze)
                 mc_state = "s_string"
             elif character in digit:
                 number_to_analyze = (number_to_analyze) + int(character)
@@ -91,7 +93,7 @@ def get_token(character, num_character):
                 mc_state = "s_abre_coment"
             
             #caracteres skipaveis
-            if character == " ":
+            elif character == " ":
                 mc_state = "s_header_state"            
             elif character == " ":
                 mc_state = "s_header_state"            
@@ -107,8 +109,6 @@ def get_token(character, num_character):
             elif character == ")":
                 parenteses_aberto.pop()
                 mc_state = "s_header_state"
-
-
 
             #caractere irreconhecivel
             else:
@@ -151,13 +151,17 @@ def get_token(character, num_character):
             elif character in digit:
                 string_to_analyze = string_to_analyze + character
                 mc_state = "s_string"
-            else: 
+            elif character in [" ", "\n", ":", ";", ",", "(", ")", "+", "-", "*", "/", "<", ">"]: 
                 if is_reserved(string=string_to_analyze):
                     pass
                 else:
                     token.append([string_to_analyze, "id"])
                 string_to_analyze = ""
                 mc_state = "s_header_state"
+
+            else:
+                erro.append(["unreconized_char", num_character, character])
+              
             
         
         #NOTE cases de operadores relacionais funcionando

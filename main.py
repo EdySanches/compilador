@@ -1,6 +1,6 @@
 '''
 @name: Analisador Lexico
-@author: f5edy
+@author: f5edy aaaaaaaaa
 '''
 import erros
 import string_classes
@@ -14,7 +14,7 @@ codigo = ""
 end_program = 0
 
 #codigo a ser analisado
-program_test = "analisador-lexico-main/program2.txt"
+program_test = "program2.txt"
 
 #controle da sequencia 
 tamanho = 0
@@ -39,8 +39,8 @@ def main():
         tamanho = len(cadeia_list)
         
         for i in range(tamanho):
-            print("\ncaractere analisado: " + cadeia_list[i] + " / estado: " + string_classes.mc_state
-                + " / tamanho: " + str(i))
+            #print("\ncaractere analisado: " + cadeia_list[i] + " / estado: " + string_classes.mc_state
+                #+ " / tamanho: " + str(i))
             string_classes.get_token(character=cadeia_list[i], num_character=i)
         
         #print("\nToken mais recente: " + str(string_classes.token[len(string_classes.token)-1]))

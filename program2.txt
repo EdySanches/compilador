@@ -1,4 +1,4 @@
-program nome2;
+program nome2\ç;
 {exemplo 2}
 var a, a1, b: integer;
 begin
