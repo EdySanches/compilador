@@ -1,5 +1,5 @@
 #NOTE bibliotecas
-from main import program_test
+from analisador import program_test
 from string_classes import erro, coment_aberto, parenteses_aberto, begin_aberto
 
 #NOTE verifica e mostra os erros

@@ -1,7 +1,8 @@
-import main
+import analisador
 
 
 #grupos de tokens
+interrompe_string = [" ", "\n", ":", ";", ",", "(", ")", "+", "-", "*", "/", "<", ">", "="]
 digit = ['1','2','3', '4', '5', '6', '7', '8', '9', '0']
 letter = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
              'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -11,6 +12,7 @@ reserved_words = {"read": "cmd", "write": "cmd",
                 "real": "tipo_var", "integer": "tipo_var",
                 "var": "decl_var"
                 }
+                
 
 #array que armazena os tokens
 token = []
@@ -151,7 +153,7 @@ def get_token(character, num_character):
             elif character in digit:
                 string_to_analyze = string_to_analyze + character
                 mc_state = "s_string"
-            elif character in [" ", "\n", ":", ";", ",", "(", ")", "+", "-", "*", "/", "<", ">"]: 
+            elif character in  interrompe_string: 
                 if is_reserved(string=string_to_analyze):
                     pass
                 else:
