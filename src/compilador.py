@@ -2,7 +2,7 @@
 @name: Analisador Lexico
 @author: f5edy aaaaaaaaa
 '''
-from erros import print_errors
+from src.erros_lexico import print_errors
 from lexico import get_token, print_tokens 
 from datetime import datetime
 
