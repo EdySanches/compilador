@@ -3,7 +3,7 @@
 @author: f5edy aaaaaaaaa
 '''
 from erros import print_errors
-from string_classes import get_token, print_tokens 
+from lexico import get_token, print_tokens 
 from datetime import datetime
 
 start = datetime.now()

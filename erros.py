@@ -1,6 +1,6 @@
 #NOTE bibliotecas
 # from compilador import program_test
-from string_classes import erro, coment_aberto, parenteses_aberto, begin_aberto
+from lexico import erro, coment_aberto, parenteses_aberto, begin_aberto
 
 error = erro
 #NOTE verifica e mostra os erros
