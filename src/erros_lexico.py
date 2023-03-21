@@ -4,7 +4,7 @@ from lexico import erro, coment_aberto, parenteses_aberto, begin_aberto
 
 error = erro
 #NOTE verifica e mostra os erros
-def print_errors(src_file):
+def print_lex_errors(src_file):
     global error, coment_aberto, parenteses_aberto, begin_aberto
 
     print("\n----------Erros----------")

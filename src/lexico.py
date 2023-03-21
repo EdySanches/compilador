@@ -34,7 +34,7 @@ begin_aberto = []
 #       e relacoes de expressao como: operacoes matematicas.
 
 #NOTE analisa o caractere, individualmente e como cadeia, e retorna o token
-def get_token(character, num_character, tokens):
+def get_lex_token(character, num_character, lex_tokens):
     global mc_state, string_to_analyze, number_to_analyze, comment
     global coment_aberto, parenteses_aberto, begin_aberto
 
@@ -53,16 +53,16 @@ def get_token(character, num_character, tokens):
             
             #operadores relacionais
             elif character == ",":
-                tokens.append([character,"mais_var"])
+                lex_tokens.append([character,"mais_var"])
                 mc_state = "s_header_state"    
             elif character == ";":
-                tokens.append([character,"mais_ident"])
+                lex_tokens.append([character,"mais_ident"])
                 mc_state = "s_header_state"
             elif character == "=":
-                tokens.append([character,"simb_igual"])
+                lex_tokens.append([character,"simb_igual"])
                 mc_state = "s_header_state"
             elif character == ".":
-                tokens.append([character,"simb_ponto"])
+                lex_tokens.append([character,"simb_ponto"])
                 mc_state = "s_header_state"    
             elif character == "<":
                 mc_state = "s_menor_que"
@@ -73,16 +73,16 @@ def get_token(character, num_character, tokens):
             
             #operadores matematicos
             elif character == "+":
-                tokens.append([character, "op_ad"])
+                lex_tokens.append([character, "op_ad"])
                 mc_state = "s_header_state"
             elif character == "-":
-                tokens.append([character, "op_st"])
+                lex_tokens.append([character, "op_st"])
                 mc_state = "s_header_state" 
             elif character == "*":
-                tokens.append([character, "op_mt"])
+                lex_tokens.append([character, "op_mt"])
                 mc_state = "s_header_state"
             elif character == "/":
-                tokens.append([character, "op_dv"])
+                lex_tokens.append([character, "op_dv"])
                 mc_state = "s_header_state"
 
             #operador de comentario
@@ -132,7 +132,7 @@ def get_token(character, num_character, tokens):
             if character == "}":
                 comment = comment + character
                 coment_aberto.pop()
-                tokens.append([comment,"comentario"])
+                lex_tokens.append([comment,"comentario"])
                 mc_state = "s_header_state"
             elif character == "\0":
                 erro.append(["coment_aberto", num_character, character])
@@ -151,10 +151,10 @@ def get_token(character, num_character, tokens):
                 string_to_analyze = string_to_analyze + character
                 mc_state = "s_string"
             elif character in  interrompe_string: 
-                if is_reserved(string=string_to_analyze, tokens=tokens):
+                if is_reserved(string=string_to_analyze, lex_tokens=lex_tokens):
                     pass
                 else:
-                    tokens.append([string_to_analyze, "id"])
+                    lex_tokens.append([string_to_analyze, "id"])
                 string_to_analyze = ""
                 mc_state = "s_header_state"
 
@@ -165,36 +165,36 @@ def get_token(character, num_character, tokens):
         
         #NOTE cases de operadores relacionais funcionando
         case "s_mais_var":
-            tokens.append([",", "mais_var"])
+            lex_tokens.append([",", "mais_var"])
             mc_state = "s_header_state"
         
         case "s_mais_ident":
-            tokens.append([";", "mais_ident"])
+            lex_tokens.append([";", "mais_ident"])
             mc_state = "s_header_state"
 
         case "s_dois_pontos":
             if character == "=":
-                tokens.append([":=","simb_atrib"])
+                lex_tokens.append([":=","simb_atrib"])
                 mc_state =  "s_header_state"
             else: 
-                tokens.append([":","simb_dp"])
+                lex_tokens.append([":","simb_dp"])
                 mc_state =  "s_header_state"
         case "s_menor_que":
             if character == "=":
-                tokens.append(["<=","simb_menor_igual"])        
+                lex_tokens.append(["<=","simb_menor_igual"])        
                 mc_state = "s_header_state"
             elif character == ">":
-                tokens.append(["<>","simb_dif"])
+                lex_tokens.append(["<>","simb_dif"])
                 mc_state = "s_header_state"
             else:
-                tokens.append(["<","simb_menor"])
+                lex_tokens.append(["<","simb_menor"])
                 mc_state = "s_header_state"
         case "s_maior_que":
             if character == "=":
-                tokens.append([">=","simb_maior_igual"])
+                lex_tokens.append([">=","simb_maior_igual"])
                 mc_state = "s_header_state"
             else:
-                tokens.append([">","simb_maior"])
+                lex_tokens.append([">","simb_maior"])
                 mc_state = "s_header_state"
         
         #NOTE cases de digitos funcionando
@@ -207,7 +207,7 @@ def get_token(character, num_character, tokens):
                 mc_state = "s_real_numb"
             else:
                 #print("number_to_analyze: " + str(number_to_analyze))
-                tokens.append([str(number_to_analyze),"num_inteiro"])
+                lex_tokens.append([str(number_to_analyze),"num_inteiro"])
                 number_to_analyze = 0
                 mc_state = "s_header_state"
         case "s_real_numb":
@@ -224,27 +224,27 @@ def get_token(character, num_character, tokens):
                 #print("number_to_analyze: " + str(number_to_analyze))
                 mc_state = "s_real_numb2"
             else:
-                tokens.append([str(number_to_analyze),"num_real"])
+                lex_tokens.append([str(number_to_analyze),"num_real"])
                 number_to_analyze = 0
                 mc_state = "s_header_state"
 
 #NOTE verifica se a palavra detectada eh reservada 
-def is_reserved(string, tokens):
+def is_reserved(string, lex_tokens):
     if string in reserved_words:
         #print("encontrada palavra reservada! palavra: " + string + " com token: " + reserved_words[string])
-        tokens.append([string, reserved_words[string]])
+        lex_tokens.append([string, reserved_words[string]])
         return True
     else:
         return False
 
-#NOTE mostra os tokens
-def print_tokens(tokens):
-    print("\n----------Tokens----------")
+#NOTE mostra os lex_tokens
+def print_lex_tokens(lex_tokens):
+    print("\n----------lex_tokens----------")
     
-    cont_tokens = len(tokens)
-    print("\nTotal de tokens: " + str(cont_tokens))
-    for i in range(cont_tokens):
-            print("Token[" + str(i) + "]: " + str(tokens[i]))
+    cont_lex_tokens = len(lex_tokens)
+    print("\nTotal de lex_tokens: " + str(cont_lex_tokens))
+    for i in range(cont_lex_tokens):
+            print("Token[" + str(i) + "]: " + str(lex_tokens[i]))
     
     print("\n")
 
