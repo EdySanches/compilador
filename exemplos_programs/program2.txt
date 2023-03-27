@@ -1,0 +1,13 @@
+program nome2\ç;
+{exemplo 2}
+var a, a1, b: integer;
+begin
+read(a, b);
+a1=a+b;
+while al>a do
+begin
+write(al);
+a1:=a1-1;
+end;
+if a<> b then write(a);
+ ++++
