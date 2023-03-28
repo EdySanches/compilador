@@ -62,8 +62,6 @@ def main():
     print("\n------------------- Análise Sintática -------------------")
 
     lex_tokens.append(" ")
-    # for j in range(len(lex_tokens)):
-        # get_sint_token(lex_tokens=lex_tokens[j], num_character=j, sint_token=sint_tokens)
     get_sint_token(lex_tokens=lex_tokens, sint_token=sint_tokens)
 
 

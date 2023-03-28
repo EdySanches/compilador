@@ -1,9 +1,18 @@
-#NOTE bibliotecas
-# from compilador import program_test
-from lexico import erro, coment_aberto, parenteses_aberto, begin_aberto
+'''
+    @author: f5edy
+    @description: catch errors from lexic analyse
+    @todo:
+        - catch "while_do" error
+        - catch "if_then_else"
+'''
 
-error = erro
-#NOTE verifica e mostra os erros
+# bibliotecas
+from lexico import lex_erro, coment_aberto, parenteses_aberto, begin_aberto
+
+# globais
+error = lex_erro
+
+# verifica e mostra os erros
 def print_lex_errors(src_file):
     global error, coment_aberto, parenteses_aberto, begin_aberto
 

@@ -3,18 +3,21 @@ interrompe_string = [" ", "\n", ":", ";", ",", "(", ")", "+", "-", "*", "/", "<"
 digit = ['1','2','3', '4', '5', '6', '7', '8', '9', '0']
 letter = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
              'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-reserved_words = {"read": "cmd", "write": "cmd",
+reserved_words = {"read": "read", "write": "write",
                 "program": "programa",
                 "begin": "corpo", "end": "corpo",
                 "real": "tipo_var", "integer": "tipo_var",
-                "var": "decl_var"
+                "var": "decl_var",
+                "if": "if", "then": "then", "else": "else",
+                "while": "while", "do": "do",
+                "var": "var"
                 }
                 
 
 #array que armazena os tokens
 # token = []
 #array que armazena os erros
-erro = []
+lex_erro = []
 
 #controle da maquina de estados
 mc_state = "s_header_state"
@@ -30,7 +33,7 @@ parenteses_aberto = []
 begin_aberto = []
 
 #TODO ainda faltam:
-#       relacoes de abre_fecha como: parenteses, begin_end, while_do, if_then_else;
+#       relacoes de abre_fecha como: parenteses, while_do, if_then_else;
 #       e relacoes de expressao como: operacoes matematicas.
 
 #NOTE analisa o caractere, individualmente e como cadeia, e retorna o token
@@ -76,13 +79,13 @@ def get_lex_token(character, num_character, lex_tokens):
                 lex_tokens.append([character, "op_ad"])
                 mc_state = "s_header_state"
             elif character == "-":
-                lex_tokens.append([character, "op_st"])
+                lex_tokens.append([character, "op_ad"])
                 mc_state = "s_header_state" 
             elif character == "*":
-                lex_tokens.append([character, "op_mt"])
+                lex_tokens.append([character, "op_mul"])
                 mc_state = "s_header_state"
             elif character == "/":
-                lex_tokens.append([character, "op_dv"])
+                lex_tokens.append([character, "op_mul"])
                 mc_state = "s_header_state"
 
             #operador de comentario
@@ -111,7 +114,7 @@ def get_lex_token(character, num_character, lex_tokens):
 
             #caractere irreconhecivel
             else:
-                erro.append(["unreconized_char", num_character, character])
+                lex_erro.append(["unreconized_char", num_character, character])
                 #print("ERRO: caracter irreconhecivel!, no caractere " + str(num_character)) 
 
         #NOTE case parenteses
@@ -135,7 +138,7 @@ def get_lex_token(character, num_character, lex_tokens):
                 lex_tokens.append([comment,"comentario"])
                 mc_state = "s_header_state"
             elif character == "\0":
-                erro.append(["coment_aberto", num_character, character])
+                lex_erro.append(["coment_aberto", num_character, character])
                 #print("ERRO: comentario aberto!, no caractere " + str(num_character))
                 mc_state = "s_header_state"
             else:
@@ -159,7 +162,7 @@ def get_lex_token(character, num_character, lex_tokens):
                 mc_state = "s_header_state"
 
             else:
-                erro.append(["unreconized_char", num_character, character])
+                lex_erro.append(["unreconized_char", num_character, character])
               
             
         
@@ -216,7 +219,7 @@ def get_lex_token(character, num_character, lex_tokens):
                 #print("number_to_analyze: " + str(number_to_analyze))
                 mc_state = "s_real_numb2"
             else:
-                erro.append(["malformed_real",num_character, character])
+                lex_erro.append(["malformed_real",num_character, character])
                 #print("ERRO: Num real mal formado, no caractere " + str(num_character))
         case "s_real_numb2":
             if character in digit:
