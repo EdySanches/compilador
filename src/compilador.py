@@ -62,7 +62,7 @@ def main():
     print("\n------------------- Análise Sintática -------------------")
 
     lex_tokens.append(" ")
-    get_sint_token(lex_tokens=lex_tokens, sint_token=sint_tokens)
+    get_sint_token(lex_tokens=lex_tokens, sint_tokens=sint_tokens)
 
 
 if __name__ == "__main__":

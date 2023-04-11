@@ -53,39 +53,260 @@ def get_sint_token(lex_tokens, sint_tokens):
 
 # nao terminais
 def corpo(idx_token, sint_tokens):
-    global lexi_tokens, res_words
+    global lexi_tokens
     
     dc(idx_token, sint_tokens)
     
+    idx_token += 1
     token_atual = lexi_tokens[idx_token]
-    
-    if "simb_ponto" in token_atual:
+    if "begin" in token_atual:
+        idx_token += 1
+        comandos(idx_token, sint_tokens)
+
         idx_token += 1
         token_atual = lexi_tokens[idx_token]
-
-        # pegar chave de dicionario
-        key_list = list(res_words.keys())
-        val_list = list(res_words.values())
-        begin = val_list.index("begin")
-
-        if "begin" in token_atual:
-            idx_token += 1
-            token_atual = lexi_tokens[idx_token]
-
-            # comandos(idx_token, sint_tokens)
-
-            idx_token += 1
-            token_atual = lexi_tokens[idx_token]
-            if "end" in token_atual:
-                sint_tokens.append([token_atual, "corpo"])
-            
-            else:
-                print(f"corpo -- erro no {token_atual}")
+        if "end" in token_atual:
+            sint_tokens.append([token_atual, "corpo"])
+        
         else:
             print(f"corpo -- erro no {token_atual}")
     else:
         print(f"corpo -- erro no {token_atual}")
-                            
+
+def comandos(idx_token, sint_tokens):
+    global lexi_tokens
+    
+    token_atual = lexi_tokens[idx_token]
+
+    if "" in token_atual: #TODO teste
+        cmd(idx_token, sint_tokens) 
+        
+        idx_token += 1
+        token_atual = lexi_tokens[idx_token]
+        if ":" in token_atual:
+            idx_token += 1 
+            comandos(idx_token, sint_tokens)
+        else:
+            print(f"comandos -- erro no {token_atual}")
+    else:
+        sint_tokens.append([token_atual, "comandos"])
+
+def cmd(idx_token, sint_tokens):
+    global lexi_tokens
+    
+    token_atual = lexi_tokens[idx_token]
+    if "read" in token_atual:
+        idx_token += 1 
+        token_atual = lexi_tokens[idx_token]
+        if "(" in token_atual:
+            idx_token += 1 
+            variaveis(idx_token, sint_tokens)
+        
+            idx_token += 1 
+            token_atual = lexi_tokens[idx_token]
+            if ")" in token_atual:
+                sint_tokens.append([token_atual, "cmd"])
+            else:
+                print(f"cmd -- erro no {token_atual}")
+        else:
+            print(f"cmd -- erro no {token_atual}")
+    
+    elif "write" in token_atual:
+        idx_token += 1 
+        token_atual = lexi_tokens[idx_token]
+        if "(" in token_atual:
+            idx_token += 1 
+            variaveis(idx_token, sint_tokens)
+        
+            idx_token += 1 
+            token_atual = lexi_tokens[idx_token]
+            if ")" in token_atual:
+                sint_tokens.append([token_atual, "cmd"])
+            else:
+                print(f"cmd -- erro no {token_atual}")
+        else:
+            print(f"cmd -- erro no {token_atual}")
+    
+    elif "if" in token_atual:
+        idx_token += 1 
+        condicao(idx_token, sint_tokens)
+        
+        idx_token += 1 
+        token_atual = lexi_tokens[idx_token]
+        if "then" in token_atual:
+            idx_token += 1 
+            cmd(idx_token, sint_tokens)
+            idx_token += 1 
+            p_falsa(idx_token, sint_tokens)
+
+        else:
+            print(f"cmd -- erro no {token_atual}")
+
+    elif "ident" in token_atual:
+        idx_token += 1 
+        token_atual = lexi_tokens[idx_token]
+        if "simb_atrib" in token_atual:
+            idx_token += 1 
+            expressao(idx_token, sint_tokens)
+            sint_tokens.append([token_atual, "cmd"])
+        else:
+            lista_arg(idx_token, sint_tokens)
+            sint_tokens.append([token_atual, "cmd"])
+
+    elif "begin" in token_atual:
+        idx_token += 1 
+        variaveis(idx_token, sint_tokens)
+    
+        idx_token += 1 
+        token_atual = lexi_tokens[idx_token]
+        if "end" in token_atual:
+            sint_tokens.append([token_atual, "cmd"])
+        else:
+            print(f"cmd -- erro no {token_atual}")
+
+    else:
+        print(f"cmd -- erro no {token_atual}")
+
+def condicao(idx_token, sint_tokens):
+    global lexi_tokens
+
+    expressao(idx_token, sint_tokens)
+
+    idx_token+=1
+    relacao(idx_token, sint_tokens)
+    
+    idx_token+=1
+    expressao(idx_token, sint_tokens)
+
+    token_atual = lexi_tokens[idx_token]
+    sint_tokens.append([token_atual, "condicao"])
+
+def expressao(idx_token, sint_tokens):
+    global lexi_tokens
+
+    termo(idx_token, sint_tokens)
+
+    idx_token+=1
+    outros_termos(idx_token, sint_tokens)
+
+    token_atual = lexi_tokens[idx_token]
+    sint_tokens.append([token_atual, "expressao"])
+
+def termo(idx_token, sint_tokens):
+    global lexi_tokens
+
+    op_un(idx_token, sint_tokens)
+    
+    idx_token+=1
+    fator(idx_token, sint_tokens)
+
+    idx_token+=1
+    mais_fatores(idx_token, sint_tokens)
+
+    token_atual = lexi_tokens[idx_token]
+    sint_tokens.append([token_atual, "termo"])
+
+def op_un(idx_token, sint_tokens):
+    global lexi_tokens
+
+    token_atual = lexi_tokens[idx_token]
+    if "+" in token_atual:
+        sint_tokens.append([token_atual, "op_un"])
+    elif "-" in token_atual:
+        sint_tokens.append([token_atual, "op_un"])
+    else:
+        sint_tokens.append([token_atual, "op_un"])
+    
+def fator(idx_token, sint_tokens):
+    global lexi_tokens
+    
+    token_atual = lexi_tokens[idx_token]
+    if "ident" in token_atual:
+        sint_tokens.append([token_atual, "fator"])
+    elif "numero_int" in token_atual:
+        sint_tokens.append([token_atual, "fator"])
+    elif "numero_real" in token_atual:
+        sint_tokens.append([token_atual, "fator"])
+    else:
+        expressao(idx_token, sint_tokens)
+
+def mais_fatores(idx_token, sint_tokens):
+    global lexi_tokens
+    
+    op_mul(idx_token, sint_tokens)
+    idx_token+=1
+
+    fator(idx_token, sint_tokens)
+    idx_token+=1
+
+    mais_fatores(idx_token, sint_tokens)
+    #TODO ver como fazer o OR de vazio
+
+def op_mul(idx_token, sint_tokens):
+    global lexi_tokens
+
+    token_atual = lexi_tokens[idx_token]
+    if "*" in token_atual:
+        sint_tokens.append([token_atual, "op_mul"])
+    elif "/" in token_atual:
+        sint_tokens.append([token_atual, "op_mul"]) 
+    else:
+        print(f"op_mul -- erro no {token_atual}")
+  
+def outros_termos(idx_token, sint_tokens):
+    global lexi_tokens
+    
+    op_ad(idx_token, sint_tokens)
+    idx_token+=1
+
+    termo(idx_token, sint_tokens)
+    idx_token+=1
+
+    outros_termos(idx_token, sint_tokens)
+    #TODO ver como fazer o OR de vazio
+    
+def op_ad(idx_token, sint_tokens):
+    global lexi_tokens
+
+    token_atual = lexi_tokens[idx_token]
+    if "+" in token_atual:
+        sint_tokens.append([token_atual, "op_ad"])
+    elif "-" in token_atual:
+        sint_tokens.append([token_atual, "op_ad"]) 
+    else:
+        print(f"op_ad -- erro no {token_atual}")
+
+
+
+
+
+
+
+
+
+#TODO reposicionar
+def p_falsa(idx_token, sint_tokens):
+    global lexi_tokens
+
+    token_atual = lexi_tokens[idx_token]
+    if "else" in token_atual:
+        idx_token+=1
+        cmd(idx_token, sint_tokens)
+        sint_tokens.append([token_atual, "p_falsa"])
+    else:
+        sint_tokens.append([token_atual, "p_falsa"])
+
+def variaveis(idx_token, sint_tokens):
+    global lexi_tokens
+    
+    token_atual = lexi_tokens[idx_token]
+    if "ident" in token_atual:
+        idx_token += 1
+        mais_var(idx_token, sint_tokens)
+        sint_tokens.append([token_atual, "variaveis"])
+    else:
+        print(f"variaveis -- erro no {token_atual}")
+            
 
 def dc(idx_token, sint_tokens):
     global lexi_tokens
@@ -145,20 +366,6 @@ def dc_p(idx_token, sint_tokens):
             print(f"dc_p -- erro no {token_atual}")
     else:
         sint_tokens.append([token_atual, "dc_p"])
-
-def variaveis(idx_token, sint_tokens):
-    global lexi_tokens
-    
-    token_atual = lexi_tokens[idx_token]
-    if "ident" in token_atual:
-        idx_token += 1
-        mais_var(idx_token, sint_tokens)
-        sint_tokens.append([token_atual, "variaveis"])
-    else:
-        print(f"variaveis -- erro no {token_atual}")
-
-            
-
 
 def parametros(idx_token, sint_tokens):
     global lexi_tokens
