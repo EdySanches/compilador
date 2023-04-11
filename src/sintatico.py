@@ -92,7 +92,7 @@ def dc(idx_token, sint_tokens):
     
     dc_v(idx_token, sint_tokens)
     idx_token += 1
-    dc_v(idx_token, sint_tokens)
+    dc_p(idx_token, sint_tokens)
     token_atual = lexi_tokens[idx_token]
 
     sint_tokens.append([token_atual, "dc"])
@@ -100,10 +100,96 @@ def dc(idx_token, sint_tokens):
 def dc_v(idx_token, sint_tokens):
     global lexi_tokens
     
-    key_list = list(res_words.keys())
-    val_list = list(res_words.values())
-    var = val_list.index("var")
+    token_atual = lexi_tokens[idx_token]
+    if "var" in token_atual:
+        idx_token += 1    
+        variaveis(idx_token, sint_tokens)
+        idx_token += 1
+        token_atual = lexi_tokens[idx_token]
+        if ":" in token_atual:
+            idx_token += 1 
+            tipo_var(idx_token, sint_tokens)
+            idx_token += 1 
+            token_atual = lexi_tokens[idx_token]
+            if ";" in token_atual:
+                idx_token += 1 
+                dc_v(idx_token, sint_tokens)
+            
+            else:
+                print(f"dc_v -- erro no {token_atual}")
+        else:
+            print(f"dc_v -- erro no {token_atual}")
+    else:
+        sint_tokens.append([token_atual, "dc_v"])
 
+def dc_p(idx_token, sint_tokens):
+    global lexi_tokens
+    
+    token_atual = lexi_tokens[idx_token]
+    if "procedure" in token_atual:
+        idx_token += 1
+        token_atual = lexi_tokens[idx_token]
+        if "ident" in token_atual:
+            idx_token += 1
+            parametros(idx_token, sint_tokens)
+            idx_token += 1
+            token_atual = lexi_tokens[idx_token]
+            if ";" in token_atual:
+                idx_token += 1
+                corpo_p(idx_token, sint_tokens)
+                idx_token += 1
+                dc_p(idx_token, sint_tokens)
+            else:
+                print(f"dc_p -- erro no {token_atual}")
+        else:
+            print(f"dc_p -- erro no {token_atual}")
+    else:
+        sint_tokens.append([token_atual, "dc_p"])
+
+def variaveis(idx_token, sint_tokens):
+    global lexi_tokens
+    
+    token_atual = lexi_tokens[idx_token]
+    if "ident" in token_atual:
+        idx_token += 1
+        mais_var(idx_token, sint_tokens)
+        sint_tokens.append([token_atual, "variaveis"])
+    else:
+        print(f"variaveis -- erro no {token_atual}")
+
+            
+
+
+def parametros(idx_token, sint_tokens):
+    global lexi_tokens
+    
+    token_atual = lexi_tokens[idx_token]
+    if "(" in token_atual:
+        idx_token += 1
+        lista_par(idx_token, sint_tokens)
+        idx_token += 1
+        token_atual = lexi_tokens[idx_token]
+        if ")" in token_atual:
+            sint_tokens.append([token_atual, "parametros"])
+        else:
+            print(f"parametros -- erro no {token_atual}")
+    else:
+        sint_tokens.append([token_atual, "parametros"])
+
+def lista_par(idx_token, sint_tokens):
+    global lexi_tokens
+    
+    token_atual = lexi_tokens[idx_token]
+    variaveis(idx_token, sint_tokens)
+    idx_token += 1
+    token_atual = lexi_tokens[idx_token]
+    if ":" in token_atual:
+        idx_token += 1
+        tipo_var(idx_token, sint_tokens)
+        idx_token += 1
+        mais_par(idx_token, sint_tokens)
+        token_atual = lexi_tokens[idx_token]
+        sint_tokens.append([token_atual, "lista_par"])
 
 
     
