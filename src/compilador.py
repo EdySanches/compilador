@@ -5,9 +5,9 @@
 
 # libs
 from datetime import datetime
-from sintatico import get_sint_token
 from erros_lexico import print_lex_errors
 from lexico import get_lex_token, print_lex_tokens 
+from sintatico import get_sint_token, print_sint_tokens
 
 # globais
 #controle de tempo
@@ -63,7 +63,7 @@ def main():
 
     lex_tokens.append(" ")
     get_sint_token(lex_tokens=lex_tokens, sint_tokens=sint_tokens)
-
+    print_sint_tokens(sint_tokens)
 
 if __name__ == "__main__":
     main()

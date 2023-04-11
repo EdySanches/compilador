@@ -1,18 +1,4 @@
-#grupos de tokens
-interrompe_string = [" ", "\n", ":", ";", ",", "(", ")", "+", "-", "*", "/", "<", ">", "="]
-digit = ['1','2','3', '4', '5', '6', '7', '8', '9', '0']
-letter = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-             'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-reserved_words = {"read": "read", "write": "write",
-                "program": "programa",
-                "begin": "corpo", "end": "corpo",
-                "real": "tipo_var", "integer": "tipo_var",
-                "var": "decl_var",
-                "if": "if", "then": "then", "else": "else",
-                "while": "while", "do": "do",
-                "var": "var"
-                }
-                
+from palavras_reservadas import digit, interrompe_string, letter, reserved_words, estados            
 
 #array que armazena os tokens
 # token = []
@@ -20,7 +6,8 @@ reserved_words = {"read": "read", "write": "write",
 lex_erro = []
 
 #controle da maquina de estados
-mc_state = "s_header_state"
+estado = estados
+mc_state = estado["S_HEADER_STATE"]
 
 #concatenacao de dados 
 string_to_analyze = ""
@@ -32,9 +19,7 @@ coment_aberto = []
 parenteses_aberto = []
 begin_aberto = []
 
-#TODO ainda faltam:
-#       relacoes de abre_fecha como: parenteses, while_do, if_then_else;
-#       e relacoes de expressao como: operacoes matematicas.
+#BUG em ponto_virgula, virgula, parenteses, igual
 
 #NOTE analisa o caractere, individualmente e como cadeia, e retorna o token
 def get_lex_token(character, num_character, lex_tokens):
@@ -56,16 +41,16 @@ def get_lex_token(character, num_character, lex_tokens):
             
             #operadores relacionais
             elif character == ",":
-                lex_tokens.append([character,"mais_var"])
+                lex_tokens.append([character,","])
                 mc_state = "s_header_state"    
             elif character == ";":
-                lex_tokens.append([character,"mais_ident"])
+                lex_tokens.append([character,";"])
                 mc_state = "s_header_state"
             elif character == "=":
-                lex_tokens.append([character,"simb_igual"])
+                lex_tokens.append([character,"="])
                 mc_state = "s_header_state"
             elif character == ".":
-                lex_tokens.append([character,"simb_ponto"])
+                lex_tokens.append([character,"."])
                 mc_state = "s_header_state"    
             elif character == "<":
                 mc_state = "s_menor_que"
@@ -157,7 +142,7 @@ def get_lex_token(character, num_character, lex_tokens):
                 if is_reserved(string=string_to_analyze, lex_tokens=lex_tokens):
                     pass
                 else:
-                    lex_tokens.append([string_to_analyze, "id"])
+                    lex_tokens.append([string_to_analyze, "ident"])
                 string_to_analyze = ""
                 mc_state = "s_header_state"
 
@@ -172,32 +157,32 @@ def get_lex_token(character, num_character, lex_tokens):
             mc_state = "s_header_state"
         
         case "s_mais_ident":
-            lex_tokens.append([";", "mais_ident"])
+            lex_tokens.append([";", ";"])
             mc_state = "s_header_state"
 
         case "s_dois_pontos":
             if character == "=":
-                lex_tokens.append([":=","simb_atrib"])
+                lex_tokens.append([":=","="])
                 mc_state =  "s_header_state"
             else: 
-                lex_tokens.append([":","simb_dp"])
+                lex_tokens.append([":",":"])
                 mc_state =  "s_header_state"
         case "s_menor_que":
             if character == "=":
-                lex_tokens.append(["<=","simb_menor_igual"])        
+                lex_tokens.append(["<=","<="])        
                 mc_state = "s_header_state"
             elif character == ">":
-                lex_tokens.append(["<>","simb_dif"])
+                lex_tokens.append(["<>","<>"])
                 mc_state = "s_header_state"
             else:
-                lex_tokens.append(["<","simb_menor"])
+                lex_tokens.append(["<","<"])
                 mc_state = "s_header_state"
         case "s_maior_que":
             if character == "=":
-                lex_tokens.append([">=","simb_maior_igual"])
+                lex_tokens.append([">=",">="])
                 mc_state = "s_header_state"
             else:
-                lex_tokens.append([">","simb_maior"])
+                lex_tokens.append([">",">"])
                 mc_state = "s_header_state"
         
         #NOTE cases de digitos funcionando
@@ -246,7 +231,8 @@ def print_lex_tokens(lex_tokens):
     
     cont_lex_tokens = len(lex_tokens)
     print("\nTotal de lex_tokens: " + str(cont_lex_tokens))
-    for i in range(cont_lex_tokens):
+    if cont_lex_tokens > 0:
+        for i in range(cont_lex_tokens):
             print("Token[" + str(i) + "]: " + str(lex_tokens[i]))
     
     print("\n")
