@@ -25,7 +25,7 @@ lex_tokens = []
 sint_tokens = []
 
 #NOTE calcula e printa o tempo de execucao
-def print_lex_time():
+def print_comp_time():
     global start
 
     print("\n----------Tempo----------")
@@ -57,7 +57,7 @@ def main():
     #print("\nToken mais recente: " + str(string_classes.token[len(string_classes.token)-1]))
     print_lex_errors(program_test)            
     print_lex_tokens(lex_tokens)
-    print_lex_time()
+    print_comp_time()
 
     print("\n------------------- Análise Sintática -------------------")
 
