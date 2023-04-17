@@ -189,15 +189,12 @@ def get_lex_token(character, num_character, lex_tokens):
                         lex_tokens.append([character,","])
                         mc_state = "s_header_state"    
                     elif character == ";":
-                        # lex_tokens.append([string_to_analyze, "ident"])
                         lex_tokens.append([character,";"])
                         mc_state = "s_header_state"
                     elif character == "=":
-                        # lex_tokens.append([string_to_analyze, "ident"])
                         lex_tokens.append([character,"="])
                         mc_state = "s_header_state"
                     elif character == ".":
-                        # lex_tokens.append([string_to_analyze, "ident"])
                         lex_tokens.append([character,"."])
                         mc_state = "s_header_state"    
                     elif character == "<":
@@ -205,25 +202,20 @@ def get_lex_token(character, num_character, lex_tokens):
                     elif character == ">":
                         mc_state = "s_maior_que"
                     elif character == ":":
-                        # lex_tokens.append([string_to_analyze, "ident"])
                         lex_tokens.append([":",":"])
                         mc_state = "s_dois_pontos"
                     
                     #operadores matematicos
                     elif character == "+":
-                        # lex_tokens.append([string_to_analyze, "ident"])
                         lex_tokens.append([character, "op_ad"])
                         mc_state = "s_header_state"
                     elif character == "-":
-                        # lex_tokens.append([string_to_analyze, "ident"])
                         lex_tokens.append([character, "op_ad"])
                         mc_state = "s_header_state" 
                     elif character == "*":
-                        # lex_tokens.append([string_to_analyze, "ident"])
                         lex_tokens.append([character, "op_mul"])
                         mc_state = "s_header_state"
                     elif character == "/":
-                        # lex_tokens.append([string_to_analyze, "ident"])
                         lex_tokens.append([character, "op_mul"])
                         mc_state = "s_header_state"
 
@@ -235,7 +227,6 @@ def get_lex_token(character, num_character, lex_tokens):
                     
                     #caracteres skipaveis
                     elif character == " ":
-                        # lex_tokens.append([string_to_analyze, "ident"])
                         mc_state = "s_header_state"            
                     elif character == " ":
                         mc_state = "s_header_state"            
@@ -304,6 +295,7 @@ def get_lex_token(character, num_character, lex_tokens):
                 lex_tokens.append([":=",":="])
                 mc_state =  "s_header_state"
             else: 
+                lex_tokens.append([":",":"])
                 mc_state =  "s_header_state"
         case "s_menor_que":
             if "=" in character:
