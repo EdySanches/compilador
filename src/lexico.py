@@ -19,7 +19,7 @@ coment_aberto = []
 parenteses_aberto = []
 begin_aberto = []
 
-#BUG em ponto_virgula, virgula, parenteses, igual
+#BUG em igual
 
 #NOTE analisa o caractere, individualmente e como cadeia, e retorna o token
 def get_lex_token(character, num_character, lex_tokens):
@@ -57,6 +57,7 @@ def get_lex_token(character, num_character, lex_tokens):
             elif character == ">":
                 mc_state = "s_maior_que"
             elif character == ":":
+                lex_tokens.append([":",":"])
                 mc_state = "s_dois_pontos"
             
             #operadores matematicos
@@ -92,9 +93,12 @@ def get_lex_token(character, num_character, lex_tokens):
             #parenteses
             elif character == "(":
                 parenteses_aberto.append(num_character)
-                mc_state = "s_abre_parent"
+                lex_tokens.append([character,"."])
+                mc_state = "s_header_state"
+                # mc_state = "s_abre_parent"
             elif character == ")":
                 parenteses_aberto.pop()
+                lex_tokens.append([character,"."])
                 mc_state = "s_header_state"
 
             #caractere irreconhecivel
@@ -102,6 +106,161 @@ def get_lex_token(character, num_character, lex_tokens):
                 lex_erro.append(["unreconized_char", num_character, character])
                 #print("ERRO: caracter irreconhecivel!, no caractere " + str(num_character)) 
 
+        #NOTE case de identificadores ou palavras reservadas funcionando
+        case "s_string":
+            if character in letter:
+                string_to_analyze = string_to_analyze + character
+                mc_state = "s_string"
+
+            elif character in digit:
+                string_to_analyze = string_to_analyze + character
+                mc_state = "s_string"
+
+            elif character in interrompe_string:
+                if is_reserved(string=string_to_analyze, lex_tokens=lex_tokens):
+                    lex_tokens.append([string_to_analyze, reserved_words[string_to_analyze]])
+                    
+                    #operadores relacionais
+                    if character == ",":
+                        lex_tokens.append([character,","])
+                        mc_state = "s_header_state"    
+                    elif character == ";":
+                        lex_tokens.append([character,";"])
+                        mc_state = "s_header_state"
+                    elif character == "=":
+                        lex_tokens.append([character,"="])
+                        mc_state = "s_header_state"
+                    elif character == ".":
+                        lex_tokens.append([character,"."])
+                        mc_state = "s_header_state"    
+                    elif character == "<":
+                        mc_state = "s_menor_que"
+                    elif character == ">":
+                        mc_state = "s_maior_que"
+                    elif character == ":":
+                        lex_tokens.append([":",":"])
+                        mc_state = "s_dois_pontos"
+                    
+                    #operadores matematicos
+                    elif character == "+":
+                        lex_tokens.append([character, "op_ad"])
+                        mc_state = "s_header_state"
+                    elif character == "-":
+                        lex_tokens.append([character, "op_ad"])
+                        mc_state = "s_header_state" 
+                    elif character == "*":
+                        lex_tokens.append([character, "op_mul"])
+                        mc_state = "s_header_state"
+                    elif character == "/":
+                        lex_tokens.append([character, "op_mul"])
+                        mc_state = "s_header_state"
+
+                    #operador de comentario
+                    elif character == "{":
+                        coment_aberto.append(num_character)
+                        comment = comment + character
+                        mc_state = "s_abre_coment"
+                    
+                    #caracteres skipaveis
+                    elif character == " ":
+                        mc_state = "s_header_state"            
+                    elif character == " ":
+                        mc_state = "s_header_state"            
+                    elif character == "\t":
+                        mc_state = "s_header_state"
+                    elif character == "\n":
+                        mc_state = "s_header_state"            
+                                
+                    #parenteses
+                    elif character == "(":
+                        parenteses_aberto.append(num_character)
+                        lex_tokens.append([character, "("])
+                        mc_state = "s_header_state"
+                    elif character == ")":
+                        if len(parenteses_aberto):
+                            parenteses_aberto.pop()
+                        lex_tokens.append([character, ")"])
+                        mc_state = "s_header_state"
+
+                else:
+                    lex_tokens.append([string_to_analyze, "ident"])
+                    #operadores relacionais
+                    if character == ",":
+                        lex_tokens.append([character,","])
+                        mc_state = "s_header_state"    
+                    elif character == ";":
+                        # lex_tokens.append([string_to_analyze, "ident"])
+                        lex_tokens.append([character,";"])
+                        mc_state = "s_header_state"
+                    elif character == "=":
+                        # lex_tokens.append([string_to_analyze, "ident"])
+                        lex_tokens.append([character,"="])
+                        mc_state = "s_header_state"
+                    elif character == ".":
+                        # lex_tokens.append([string_to_analyze, "ident"])
+                        lex_tokens.append([character,"."])
+                        mc_state = "s_header_state"    
+                    elif character == "<":
+                        mc_state = "s_menor_que"
+                    elif character == ">":
+                        mc_state = "s_maior_que"
+                    elif character == ":":
+                        # lex_tokens.append([string_to_analyze, "ident"])
+                        lex_tokens.append([":",":"])
+                        mc_state = "s_dois_pontos"
+                    
+                    #operadores matematicos
+                    elif character == "+":
+                        # lex_tokens.append([string_to_analyze, "ident"])
+                        lex_tokens.append([character, "op_ad"])
+                        mc_state = "s_header_state"
+                    elif character == "-":
+                        # lex_tokens.append([string_to_analyze, "ident"])
+                        lex_tokens.append([character, "op_ad"])
+                        mc_state = "s_header_state" 
+                    elif character == "*":
+                        # lex_tokens.append([string_to_analyze, "ident"])
+                        lex_tokens.append([character, "op_mul"])
+                        mc_state = "s_header_state"
+                    elif character == "/":
+                        # lex_tokens.append([string_to_analyze, "ident"])
+                        lex_tokens.append([character, "op_mul"])
+                        mc_state = "s_header_state"
+
+                    #operador de comentario
+                    elif character == "{":
+                        coment_aberto.append(num_character)
+                        comment = comment + character
+                        mc_state = "s_abre_coment"
+                    
+                    #caracteres skipaveis
+                    elif character == " ":
+                        # lex_tokens.append([string_to_analyze, "ident"])
+                        mc_state = "s_header_state"            
+                    elif character == " ":
+                        mc_state = "s_header_state"            
+                    elif character == "\t":
+                        mc_state = "s_header_state"
+                    elif character == "\n":
+                        mc_state = "s_header_state"            
+                                
+                    #parenteses
+                    elif character == "(":
+                        lex_tokens.append([character, "("])
+                        parenteses_aberto.append(num_character)
+                        mc_state = "s_abre_parent"
+                    elif character == ")":
+                        lex_tokens.append([character, ")"])
+                        if len(parenteses_aberto):
+                            parenteses_aberto.pop()
+                        mc_state = "s_header_state"
+                                
+                string_to_analyze = ""
+                mc_state = "s_header_state"
+
+            else:
+                lex_erro.append(["unreconized_char", num_character, character])
+        
         #NOTE case parenteses
         case "s_abre_parent":
             if character == ")":
@@ -130,98 +289,6 @@ def get_lex_token(character, num_character, lex_tokens):
                 comment = comment + character
                 mc_state = "s_abre_coment"
 
-        #NOTE case de identificadores ou palavras reservadas funcionando
-        case "s_string":
-            if character in letter:
-                string_to_analyze = string_to_analyze + character
-                mc_state = "s_string"
-            elif character in digit:
-                string_to_analyze = string_to_analyze + character
-                mc_state = "s_string"
-            elif character in interrompe_string:
- 
-                if is_reserved(string=string_to_analyze, lex_tokens=lex_tokens):
-                    pass
-                
-                #operadores relacionais
-                elif character == ",":
-                    lex_tokens.append([string_to_analyze, "ident"])
-                    lex_tokens.append([character,","])
-                    mc_state = "s_header_state"    
-                elif character == ";":
-                    lex_tokens.append([string_to_analyze, "ident"])
-                    lex_tokens.append([character,";"])
-                    mc_state = "s_header_state"
-                elif character == "=":
-                    lex_tokens.append([string_to_analyze, "ident"])
-                    lex_tokens.append([character,"="])
-                    mc_state = "s_header_state"
-                elif character == ".":
-                    lex_tokens.append([string_to_analyze, "ident"])
-                    lex_tokens.append([character,"."])
-                    mc_state = "s_header_state"    
-                elif character == "<":
-                    mc_state = "s_menor_que"
-                elif character == ">":
-                    mc_state = "s_maior_que"
-                elif character == ":":
-                    mc_state = "s_dois_pontos"
-                
-                #operadores matematicos
-                elif character == "+":
-                    lex_tokens.append([string_to_analyze, "ident"])
-                    lex_tokens.append([character, "op_ad"])
-                    mc_state = "s_header_state"
-                elif character == "-":
-                    lex_tokens.append([string_to_analyze, "ident"])
-                    lex_tokens.append([character, "op_ad"])
-                    mc_state = "s_header_state" 
-                elif character == "*":
-                    lex_tokens.append([string_to_analyze, "ident"])
-                    lex_tokens.append([character, "op_mul"])
-                    mc_state = "s_header_state"
-                elif character == "/":
-                    lex_tokens.append([string_to_analyze, "ident"])
-                    lex_tokens.append([character, "op_mul"])
-                    mc_state = "s_header_state"
-
-                #operador de comentario
-                elif character == "{":
-                    coment_aberto.append(num_character)
-                    comment = comment + character
-                    mc_state = "s_abre_coment"
-                
-                #caracteres skipaveis
-                elif character == " ":
-                    lex_tokens.append([string_to_analyze, "ident"])
-                    mc_state = "s_header_state"            
-                elif character == " ":
-                    mc_state = "s_header_state"            
-                elif character == "\t":
-                    mc_state = "s_header_state"
-                elif character == "\n":
-                    mc_state = "s_header_state"            
-                            
-                #parenteses
-                elif character == "(":
-                    lex_tokens.append([string_to_analyze, "ident"])
-                    parenteses_aberto.append(num_character)
-                    mc_state = "s_abre_parent"
-                elif character == ")":
-                    if len(parenteses_aberto):
-                        parenteses_aberto.pop()
-                    mc_state = "s_header_state"
-                                
-                else:
-                    lex_tokens.append([string_to_analyze, "ident"])
-                string_to_analyze = ""
-                mc_state = "s_header_state"
-
-            else:
-                lex_erro.append(["unreconized_char", num_character, character])
-              
-            
-        
         #NOTE cases de operadores relacionais funcionando
         case "s_mais_var":
             lex_tokens.append([",", "mais_var"])
@@ -232,17 +299,17 @@ def get_lex_token(character, num_character, lex_tokens):
             mc_state = "s_header_state"
 
         case "s_dois_pontos":
-            if character == "=":
-                lex_tokens.append([":=","="])
+            if "=" in character:
+                lex_tokens.pop()
+                lex_tokens.append([":=",":="])
                 mc_state =  "s_header_state"
             else: 
-                lex_tokens.append([":",":"])
                 mc_state =  "s_header_state"
         case "s_menor_que":
-            if character == "=":
+            if "=" in character:
                 lex_tokens.append(["<=","<="])        
                 mc_state = "s_header_state"
-            elif character == ">":
+            elif ">" in character:
                 lex_tokens.append(["<>","<>"])
                 mc_state = "s_header_state"
             else:
@@ -291,7 +358,7 @@ def get_lex_token(character, num_character, lex_tokens):
 def is_reserved(string, lex_tokens):
     if string in reserved_words:
         #print("encontrada palavra reservada! palavra: " + string + " com token: " + reserved_words[string])
-        lex_tokens.append([string, reserved_words[string]])
+        # lex_tokens.append([string, reserved_words[string]])
         return True
     else:
         return False

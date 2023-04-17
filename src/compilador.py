@@ -24,21 +24,12 @@ tamanho = 0
 lex_tokens = []
 sint_tokens = []
 
-#NOTE calcula e printa o tempo de execucao
-def print_comp_time():
-    global start
-
-    print("\n----------Tempo----------")
-
-    time_passed = datetime.now() - start
-    print("\nTempo decorrido na análise: " + str(time_passed) + " milisegundos!\n\n")
-
 #NOTE principal
 def main():
     global codigo, start, end_program, tamanho, lex_tokens
     print("Iniciando main...")
 
-    print("\n------------- F5 COMPILER -------------")
+    print("\n----------------------- F5 COMPILER -----------------------")
 
     # abrindo codigo fonte
     with open(program_test, 'r') as reader:
@@ -57,13 +48,25 @@ def main():
     #print("\nToken mais recente: " + str(string_classes.token[len(string_classes.token)-1]))
     print_lex_errors(program_test)            
     print_lex_tokens(lex_tokens)
-    print_comp_time()
 
     print("\n------------------- Análise Sintática -------------------")
 
     lex_tokens.append(" ")
     get_sint_token(lex_tokens=lex_tokens, sint_tokens=sint_tokens)
     print_sint_tokens(sint_tokens)
+
+    print_comp_time()
+
+
+#NOTE calcula e printa o tempo de execucao
+def print_comp_time():
+    global start
+
+    print("\n------------------- Tempo -------------------")
+
+    time_passed = datetime.now() - start
+    print("\nTempo decorrido na análise: " + str(time_passed) + " milisegundos!\n\n")
+
 
 if __name__ == "__main__":
     main()

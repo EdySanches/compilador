@@ -2,7 +2,7 @@ program nome2;
 var a, a1, d: integer;
 begin
 read(a, d);
-a1=a+d;
+a1:=a+d;
 while al>a do
 begin
 write(al);
