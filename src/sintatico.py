@@ -165,17 +165,21 @@ def variaveis(idx_token, lex_tokens, sint_tokens):
         mais_var(idx_token, lex_tokens, sint_tokens)
         sint_tokens.append([token_atual, "variaveis"])
     else:
-        print(f"variaveis -- erro no {token_atual}")
+        print(f"variaveis -- Erro na comparacao {expectativa} com o token: {token_atual}")
 
-#TODO mais_var
 def mais_var(idx_token, lex_tokens, sint_tokens):
     global seq_sint_tokens
     
     token_atual = lex_tokens[idx_token]
     expectativa = ","
     if expectativa in token_atual:
-        print(f"get_sint_token -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
+        print(f"mais_var -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
         idx_token += 1
+        variaveis(idx_token, lex_tokens, sint_tokens)
+        sint_tokens.append([token_atual, "mais_var"])
+    else:
+        print(f"mais_var -- Erro na comparacao {expectativa} com o token: {token_atual}")
+        sint_tokens.append([token_atual, "mais_var"])
 
 def dc_p(idx_token, lex_tokens, sint_tokens):
     global seq_sint_tokens
@@ -213,17 +217,17 @@ def parametros(idx_token, lex_tokens, sint_tokens):
     token_atual = lex_tokens[idx_token]
     expectativa = "("
     if expectativa in token_atual:
-        print(f"get_sint_token -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
+        print(f"parametros -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
         idx_token += 1
         lista_par(idx_token, lex_tokens, sint_tokens)
         idx_token += 1
         token_atual = lex_tokens[idx_token]
         expectativa = ")"
         if expectativa in token_atual:
-            print(f"get_sint_token -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
+            print(f"parametros -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
             sint_tokens.append([token_atual, "parametros"])
         else:
-            print(f"nome_padrao -- Erro na comparacao 'comp_padrao' com o token: {token_atual}")
+            print(f"parametros -- Erro na comparacao 'comp_padrao' com o token: {token_atual}")
     else:
         sint_tokens.append([token_atual, "parametros"])
 
@@ -236,21 +240,67 @@ def lista_par(idx_token, lex_tokens, sint_tokens):
     token_atual = lex_tokens[idx_token]
     expectativa = ":"
     if expectativa in token_atual:
-        print(f"get_sint_token -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
+        print(f"lista_par -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
         idx_token += 1
         tipo_var(idx_token, lex_tokens, sint_tokens)
         idx_token += 1
         mais_par(idx_token, lex_tokens, sint_tokens)
         token_atual = lex_tokens[idx_token]
         sint_tokens.append([token_atual, "lista_par"])
+    else:
+        print(f"lista_par -- Erro na comparacao {expectativa} com o token: {token_atual}")
 
-#TODO mais_par
+def mais_par(idx_token, lex_tokens, sint_tokens):
+    global seq_sint_tokens
+    
+    token_atual = lex_tokens[idx_token]
+    expectativa = ";"
+    if expectativa in token_atual:
+        print(f"mais_par -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
+        idx_token += 1
+        lista_par(idx_token, lex_tokens, sint_tokens)
+        sint_tokens.append([token_atual, "mais_par"])
+    else:
+        print(f"mais_par -- Erro na comparacao {expectativa} com o token: {token_atual}")
+        sint_tokens.append([token_atual, "mais_par"])
 
-#TODO corpo_p
+def corpo_p(idx_token, lex_tokens, sint_tokens):
+    global seq_sint_tokens
+    
+    dc_loc(idx_token, lex_tokens, sint_tokens)
+    idx_token += 1
+    token_atual = lex_tokens[idx_token]
+    expectativa = "begin"
+    if expectativa in token_atual:
+        print(f"corpo_p -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
+        idx_token += 1
+        comandos(idx_token, lex_tokens, sint_tokens)
+        idx_token += 1
+        token_atual = lex_tokens[idx_token]
+        expectativa = "end"
+        if expectativa in token_atual:
+            print(f"corpo_p -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
+            idx_token += 1
+            token_atual = lex_tokens[idx_token]
+            expectativa = ";"
+            if expectativa in token_atual:
+                print(f"corpo_p -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
+                sint_tokens.append([token_atual, "corpo_p"])
 
-#TODO dc_loc
+            else:
+                print(f"corpo_p -- Erro na comparacao {expectativa} com o token: {token_atual}")
+        else:
+            print(f"corpo_p -- Erro na comparacao {expectativa} com o token: {token_atual}")
+    else:
+        print(f"corpo_p -- Erro na comparacao {expectativa} com o token: {token_atual}")
 
-#TODO lista_arg
+def dc_loc(idx_token, lex_tokens, sint_tokens):
+    global seq_sint_tokens
+
+    dc_v(idx_token, lex_tokens, sint_tokens)
+    
+    token_atual = lex_tokens[idx_token]
+    sint_tokens.append([token_atual, "lista_arg"])
 
 def lista_arg(idx_token, lex_tokens, sint_tokens):
     global seq_sint_tokens
@@ -262,8 +312,8 @@ def lista_arg(idx_token, lex_tokens, sint_tokens):
         print(f"lista_arg -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
         idx_token+=1
         argumentos(idx_token, lex_tokens, sint_tokens)
+        
         idx_token+=1
-
         token_atual = lex_tokens[idx_token]
         expectativa = ")"
         if expectativa in token_atual:
