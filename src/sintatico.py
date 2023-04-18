@@ -135,7 +135,23 @@ def dc_v(idx_token, lex_tokens, sint_tokens):
     else:
         sint_tokens.append([token_atual, "dc_v"])
 
-#TODO tipo_var
+def tipo_var(idx_token, lex_tokens, sint_tokens):
+    global seq_sint_tokens
+    
+    token_atual = lex_tokens[idx_token]
+    expectativa = "real"
+    if expectativa in token_atual:
+        print(f"tipo_var -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
+        seq_sint_tokens.append(expectativa)
+        sint_tokens.append([token_atual, "tipo_var"])
+
+    elif "integer" in token_atual:
+        print(f"tipo_var -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
+        seq_sint_tokens.append(expectativa)
+        sint_tokens.append([token_atual, "tipo_var"])
+
+    else:
+        print(f"tipo_var -- Erro na comparacao {expectativa} com o token: {token_atual}")
 
 def variaveis(idx_token, lex_tokens, sint_tokens):
     global seq_sint_tokens
