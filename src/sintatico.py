@@ -168,6 +168,14 @@ def variaveis(idx_token, lex_tokens, sint_tokens):
         print(f"variaveis -- erro no {token_atual}")
 
 #TODO mais_var
+def mais_var(idx_token, lex_tokens, sint_tokens):
+    global seq_sint_tokens
+    
+    token_atual = lex_tokens[idx_token]
+    expectativa = ","
+    if expectativa in token_atual:
+        print(f"get_sint_token -- Sucesso na comparacao {expectativa} com o token: {token_atual}")
+        idx_token += 1
 
 def dc_p(idx_token, lex_tokens, sint_tokens):
     global seq_sint_tokens
