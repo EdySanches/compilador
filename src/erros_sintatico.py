@@ -1,6 +1,6 @@
 '''
     @author: f5edy
-    @description: catch errors from lexic analyse
+    @description: catch errors from sintatic analyse
 '''
 
 # libs
@@ -24,4 +24,5 @@ def print_sint_errors():
 
     if len(error) > 0:
         for i in range(len(error)):
-            print(f"Erro: {str(error[i][0])}. Expressao: [" + str(error[i][2]) + "].\n" )
+            print(f"Erro: {error[i][0]}. No caracter [{error[i][1]}]. \n" + 
+                  f"Esperado: {error[i][2][0]} | Presente: {error[i][2][1]}. \n" )

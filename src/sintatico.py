@@ -685,7 +685,7 @@ def fator(idx_token, lex_tokens, sint_tokens):
 
 
 def print_sint_tokens(sint_tokens):
-    print("\n----------sint_tokens----------")
+    print("\n----------Tokens----------")
     
     cont_sint_tokens = len(sint_tokens)
     print("\nTotal de sint_tokens: " + str(cont_sint_tokens))

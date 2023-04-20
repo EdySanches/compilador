@@ -1,13 +1,10 @@
-from palavras_reservadas import digit, interrompe_string, letter, reserved_words, estados            
+from palavras_reservadas import digit, interrompe_string, letter, reserved_words            
 
-#array que armazena os tokens
-# token = []
 #array que armazena os erros
 lex_erro = []
 
 #controle da maquina de estados
-estado = estados
-mc_state = estado["S_HEADER_STATE"]
+mc_state = "s_header_state"
 
 #concatenacao de dados 
 string_to_analyze = ""
@@ -356,7 +353,7 @@ def is_reserved(string, lex_tokens):
 
 #NOTE mostra os lex_tokens
 def print_lex_tokens(lex_tokens):
-    print("\n----------lex_tokens----------")
+    print("\n----------Tokens----------")
     
     cont_lex_tokens = len(lex_tokens)
     print("\nTotal de lex_tokens: " + str(cont_lex_tokens))

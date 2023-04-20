@@ -9,6 +9,7 @@ from erros_lexico import print_lex_errors
 from lexico import get_lex_token, print_lex_tokens 
 from sintatico import get_sint_token, print_sint_tokens
 from erros_sintatico import print_sint_errors
+
 # globais
 #controle de tempo
 start = datetime.now()
@@ -17,7 +18,7 @@ codigo = ""
 #controle do tempo de execucao
 end_program = 0
 #codigo a ser analisado
-program_test = "exemplos_programs/program1.txt"
+program_test = "exemplos_programs/program3.txt"
 #controle da sequencia 
 tamanho = 0
 #controle de tokens
@@ -36,8 +37,7 @@ def main():
         codigo = reader.read()
         print("\n------------------- Código -------------------\n" + codigo)
 
-    print("\n------------------- Análise Léxica -------------------")
-
+    print("\n-------------------   Análise Léxica   -------------------")
     codigo_list = list(codigo)
     codigo_list.append(" ")
     
@@ -48,14 +48,15 @@ def main():
     #print("\nToken mais recente: " + str(string_classes.token[len(string_classes.token)-1]))
     print_lex_errors(program_test)            
     print_lex_tokens(lex_tokens)
+    lex_tokens.append(" ")
+
 
     print("\n------------------- Análise Sintática -------------------")
-
-    lex_tokens.append(" ")
     get_sint_token(lex_tokens=lex_tokens, sint_tokens=sint_tokens)
     print_sint_errors()
     print_sint_tokens(sint_tokens)
 
+    print("\n-------------------       Tempo       -------------------")
     print_comp_time()
 
 
@@ -63,10 +64,8 @@ def main():
 def print_comp_time():
     global start
 
-    print("\n------------------- Tempo -------------------")
-
-    time_passed = datetime.now() - start
-    print("\nTempo decorrido na análise: " + str(time_passed) + " milisegundos!\n\n")
+    tempo = datetime.now() - start
+    print("\nTempo decorrido na análise: " + str(tempo) + " milisegundos!\n\n")
 
 
 if __name__ == "__main__":
