@@ -103,7 +103,7 @@ def get_lex_token(character, num_character, lex_tokens):
 
             #caractere irreconhecivel
             else:
-                lex_erro.append(["unreconized_char", num_character, character])
+                lex_erro.append(["caracter_irreconhecivel", num_character, character])
                 #print("ERRO: caracter irreconhecivel!, no caractere " + str(num_character)) 
 
         #NOTE case de identificadores ou palavras reservadas funcionando
@@ -250,7 +250,7 @@ def get_lex_token(character, num_character, lex_tokens):
                 mc_state = "s_header_state"
 
             else:
-                lex_erro.append(["unreconized_char", num_character, character])
+                lex_erro.append(["caracter_irreconhecivel", num_character, character])
         
         #NOTE case parenteses
         case "s_abre_parent":
@@ -270,7 +270,7 @@ def get_lex_token(character, num_character, lex_tokens):
             if character == "}":
                 comment = comment + character
                 coment_aberto.pop()
-                lex_tokens.append([comment,"comentario"])
+                # lex_tokens.append([comment,"comentario"])
                 mc_state = "s_header_state"
             elif character == "\0":
                 lex_erro.append(["coment_aberto", num_character, character])
@@ -349,8 +349,7 @@ def get_lex_token(character, num_character, lex_tokens):
 #NOTE verifica se a palavra detectada eh reservada 
 def is_reserved(string, lex_tokens):
     if string in reserved_words:
-        #print("encontrada palavra reservada! palavra: " + string + " com token: " + reserved_words[string])
-        # lex_tokens.append([string, reserved_words[string]])
+        # print(f"is_reserved  --  encontrada palavra reservada! palavra: {string} com token: {reserved_words[string]}")
         return True
     else:
         return False

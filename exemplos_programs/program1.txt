@@ -1,9 +1,9 @@
 program lalg;
 {exemplo 1}
 var a: integer;
-{begin
+begin
 read(a,@,1);
-end.}
+end.
 a >=/ 10
 b = 11
 c > 1.4;;

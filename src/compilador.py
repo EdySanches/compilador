@@ -8,7 +8,7 @@ from datetime import datetime
 from erros_lexico import print_lex_errors
 from lexico import get_lex_token, print_lex_tokens 
 from sintatico import get_sint_token, print_sint_tokens
-
+from erros_sintatico import print_sint_errors
 # globais
 #controle de tempo
 start = datetime.now()
@@ -17,7 +17,7 @@ codigo = ""
 #controle do tempo de execucao
 end_program = 0
 #codigo a ser analisado
-program_test = "exemplos_programs/program2.txt"
+program_test = "exemplos_programs/program1.txt"
 #controle da sequencia 
 tamanho = 0
 #controle de tokens
@@ -29,7 +29,7 @@ def main():
     global codigo, start, end_program, tamanho, lex_tokens
     print("Iniciando main...")
 
-    print("\n----------------------- F5 COMPILER -----------------------")
+    print("\n----------------------- COMPILADOR -----------------------")
 
     # abrindo codigo fonte
     with open(program_test, 'r') as reader:
@@ -53,6 +53,7 @@ def main():
 
     lex_tokens.append(" ")
     get_sint_token(lex_tokens=lex_tokens, sint_tokens=sint_tokens)
+    print_sint_errors()
     print_sint_tokens(sint_tokens)
 
     print_comp_time()

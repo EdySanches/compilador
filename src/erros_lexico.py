@@ -1,9 +1,6 @@
 '''
     @author: f5edy
     @description: catch errors from lexic analyse
-    @todo:
-        - catch "while_do" error
-        - catch "if_then_else"
 '''
 
 # bibliotecas
@@ -40,9 +37,12 @@ def print_lex_errors(src_file):
     if len(error) > 0:
         for i in range(len(error)):
             num_linha = search_line(src_file, i)
-            print("Erro " +  str(error[i][0]) + ". Line[" + str(num_linha) + "]. Cl[" + str(error[i][1]) + "]."
-             + " Ch[" + str(error[i][2]) + "].\n" )
-
+            
+            if "coment_aberto" in error[i][0]:
+                print(f"Erro {str(error[i][0])}. Line[{str(num_linha)}]. Cl[{str(error[i][1])}].")
+            elif "caracter_irreconhecivel" in error[i][0]:
+                print("Erro " +  str(error[i][0]) + ". Line[" + str(num_linha) + "]. Cl[" + str(error[i][1]) + "]."
+                     + " Ch[" + str(error[i][2]) + "].\n" )
 #NOTE calcula e mostra a linha do erro
 def search_line(src_file, num_char_errado):
     linha = ""
