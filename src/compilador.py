@@ -1,6 +1,6 @@
 '''
 @name: Analisador Lexico
-@author: f5edy aaaaaaaaa
+@author: f5edy
 '''
 
 # libs
@@ -18,7 +18,7 @@ codigo = ""
 #controle do tempo de execucao
 end_program = 0
 #codigo a ser analisado
-program_test = "exemplos_programs/program3.txt"
+program_test = "exemplos_programs/program2.txt"
 #controle da sequencia 
 tamanho = 0
 #controle de tokens

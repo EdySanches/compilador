@@ -18,12 +18,14 @@ O projeto possui apenas uma dependência, a linguagem Python, com versão mínim
 
 ### Sample Tests
 
-- Execute o arquivo "compilador.py" 
-- Indique qual arquivo deve ser utilizado na compilação.
+Execute o arquivo "compilador.py" 
 
-Explain what these tests test and why
+    Clicando no arquivo duas vezes
 
-    Give an example
+Indique qual arquivo deve ser utilizado na compilação. Já existem 3 exemplos disponíveis.
+
+    Mudando o número no nome do arquivo na variável da linha 21 do arquivo "compilador.py"
+
 
 ## Autores
 
