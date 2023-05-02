@@ -1,9 +1,9 @@
 program lalg;
 {exemplo 1}
-var a: integer;
+var a : integer;
 begin
-read(a,@,1);
+read(a,1);
 end.
-a >=/ 10
+a >= 10
 b = 11
-c > 1.4;;
+c > 1.4;

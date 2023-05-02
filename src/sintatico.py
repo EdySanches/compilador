@@ -687,7 +687,6 @@ def cmd(idx_token, lex_tokens, sint_tokens):
             print(f"cmd -- Erro na comparacao: ['{expectativa}'] com o token {token_atual} - Idx: [{idx_token}]")
 
     elif "ident" in token_atual:
-        seq_sint_tokens.append("ident")
         idx_token += 1 
         token_atual = lex_tokens[idx_token]
         expectativa = ":="
@@ -815,6 +814,7 @@ def outros_termos(idx_token, lex_tokens, sint_tokens):
     expectativa = "op_ad"
     if expectativa in token_atual:        
         print(f"outros_termos -- Sucesso na comparacao: ['{expectativa}'] com o token {token_atual} - Sequencia: {seq_sint_tokens} - Idx: [{idx_token}]")
+        seq_sint_tokens.append(token_atual[0])
         idx_token+=1
 
         aux_idx_token = termo(idx_token, lex_tokens, sint_tokens)
@@ -826,35 +826,10 @@ def outros_termos(idx_token, lex_tokens, sint_tokens):
         sint_tokens.append([seq_sint_tokens, "outros_termos"])
 
     else:
-        seq_sint_tokens.append("outros_termos")
+        sint_tokens.append("outros_termos")
         print(f"outros_termos -- CAPTUROU TOKEN: ['outros_termos'] com o token {token_atual} - Sequencia: {seq_sint_tokens} - Idx: [{idx_token}]")
         
     return idx_token
-
-
-    
-# def op_ad(idx_token, lex_tokens, sint_tokens):
-#     global seq_sint_tokens, sint_erro
-
-#     token_atual = lex_tokens[idx_token]
-#     expectativa = "+"
-#     if expectativa in token_atual:
-#         seq_sint_tokens.append(token_atual[0])
-#         print(f"op_ad -- CAPTUROU TOKEN: ['{expectativa}'] com o token {token_atual} - Sequencia: {seq_sint_tokens} - Idx: [{idx_token}]")
-#         sint_tokens.append([seq_sint_tokens, "op_ad"])
-#         idx_token+=1
-#         # seq_sint_tokens.clear()
-#     elif "-" in token_atual:
-#         seq_sint_tokens.append("-")
-#         print(f"op_ad -- CAPTUROU TOKEN: ['{expectativa}'] com o token {token_atual} - Sequencia: {seq_sint_tokens} - Idx: [{idx_token}]")
-#         sint_tokens.append([seq_sint_tokens, "op_ad"]) 
-#         idx_token+=1
-#         # seq_sint_tokens.clear()
-#     else:
-#         sint_erro.append(["token_inesperado", idx_token, token_atual, expectativa])
-#         print(f"op_ad -- Erro na comparacao: ['{expectativa}'] com o token {token_atual} - Idx: [{idx_token}]")
-
-#     return idx_token
 
 
 
@@ -864,7 +839,7 @@ def termo(idx_token, lex_tokens, sint_tokens):
     aux_idx_token = 0
 
     token_atual = lex_tokens[idx_token]
-    expectativa = "op_un"
+    expectativa = "op_ad"
     if expectativa in token_atual:
         idx_token += 1
         aux_idx_token = fator(idx_token, lex_tokens, sint_tokens)
@@ -906,7 +881,6 @@ def mais_fatores(idx_token, lex_tokens, sint_tokens):
         sint_tokens.append(seq_sint_tokens, "mais_fatores")
  
     else:
-        seq_sint_tokens.append("mais_fatores")
         sint_tokens.append([seq_sint_tokens, "mais_fatores"])
         # idx_token+=1
         print(f"mais_fatores -- CAPTUROU TOKEN: ['mais_fatores'] com o token {token_atual} - Sequencia: {seq_sint_tokens} - Idx: [{idx_token}]")
