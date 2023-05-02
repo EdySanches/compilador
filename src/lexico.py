@@ -44,7 +44,7 @@ def get_lex_token(character, num_character, lex_tokens):
                 lex_tokens.append([character,";"])
                 mc_state = "s_header_state"
             elif character == "=":
-                lex_tokens.append([character,"="])
+                lex_tokens.append([character,"relacao"])
                 mc_state = "s_header_state"
             elif character == ".":
                 lex_tokens.append([character,"."])
@@ -125,7 +125,7 @@ def get_lex_token(character, num_character, lex_tokens):
                         lex_tokens.append([character,";"])
                         mc_state = "s_header_state"
                     elif character == "=":
-                        lex_tokens.append([character,"="])
+                        lex_tokens.append([character,"relacao"])
                         mc_state = "s_header_state"
                     elif character == ".":
                         lex_tokens.append([character,"."])
@@ -189,7 +189,7 @@ def get_lex_token(character, num_character, lex_tokens):
                         lex_tokens.append([character,";"])
                         mc_state = "s_header_state"
                     elif character == "=":
-                        lex_tokens.append([character,"="])
+                        lex_tokens.append([character,"relacao"])
                         mc_state = "s_header_state"
                     elif character == ".":
                         lex_tokens.append([character,"."])
@@ -296,20 +296,20 @@ def get_lex_token(character, num_character, lex_tokens):
                 mc_state =  "s_header_state"
         case "s_menor_que":
             if "=" in character:
-                lex_tokens.append(["<=","<="])        
+                lex_tokens.append(["<=","relacao"])        
                 mc_state = "s_header_state"
             elif ">" in character:
-                lex_tokens.append(["<>","<>"])
+                lex_tokens.append(["<>","relacao"])
                 mc_state = "s_header_state"
             else:
-                lex_tokens.append(["<","<"])
+                lex_tokens.append(["<","relacao"])
                 mc_state = "s_header_state"
         case "s_maior_que":
             if character == "=":
-                lex_tokens.append([">=",">="])
+                lex_tokens.append([">=","relacao"])
                 mc_state = "s_header_state"
             else:
-                lex_tokens.append([">",">"])
+                lex_tokens.append([">","relacao"])
                 mc_state = "s_header_state"
         
         #NOTE cases de digitos funcionando
@@ -350,6 +350,16 @@ def is_reserved(string, lex_tokens):
         return True
     else:
         return False
+
+#NOTE separa as idents do resto dos tokens:
+def is_ident(lex_tokens, needle):
+    
+    for i in lex_tokens:
+        if needle in i:
+            return True
+    
+    return False
+    
 
 #NOTE mostra os lex_tokens
 def print_lex_tokens(lex_tokens):

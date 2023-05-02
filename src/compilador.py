@@ -48,8 +48,7 @@ def main():
     #print("\nToken mais recente: " + str(string_classes.token[len(string_classes.token)-1]))
     print_lex_errors(program_test)            
     print_lex_tokens(lex_tokens)
-    lex_tokens.append(" ")
-
+    lex_tokens.append(" ") 
 
     print("\n------------------- Análise Sintática -------------------")
     get_sint_token(lex_tokens=lex_tokens, sint_tokens=sint_tokens)

@@ -9,4 +9,3 @@ write(al);
 a1:=a1-1;
 end;
 if a <> d then write(a);
- ++++

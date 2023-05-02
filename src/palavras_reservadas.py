@@ -6,7 +6,7 @@ letter = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
 reserved_words = {"read": "read", "write": "write",
                 "program": "program",
                 "begin": "begin", "end": "end",
-                "real": "real", "integer": "integer",
+                "real": "tipo_var", "integer": "tipo_var",
                 "if": "if", "then": "then", "else": "else",
                 "while": "while", "do": "do",
                 "var": "var"
