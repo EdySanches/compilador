@@ -1,11 +1,11 @@
 program nome2;
-var a, a1, d: integer;
+var a, a1, d : integer;
 begin
 read(a, d);
-a1:=a+d;
-while al>a do
+a1 := + a + d;
+while al > a do
 begin
 write(al);
-a1:=a1-1;
+a1 := a1 - 1;
 end;
 if a <> d then write(a);

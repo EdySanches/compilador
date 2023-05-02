@@ -44,6 +44,7 @@ def get_lex_token(character, num_character, lex_tokens):
                 lex_tokens.append([character,";"])
                 mc_state = "s_header_state"
             elif character == "=":
+                
                 lex_tokens.append([character,"relacao"])
                 mc_state = "s_header_state"
             elif character == ".":
@@ -54,7 +55,8 @@ def get_lex_token(character, num_character, lex_tokens):
             elif character == ">":
                 mc_state = "s_maior_que"
             elif character == ":":
-                lex_tokens.append([":",":"])
+                
+                # lex_tokens.append([":",":"])
                 mc_state = "s_dois_pontos"
             
             #operadores matematicos
@@ -125,6 +127,7 @@ def get_lex_token(character, num_character, lex_tokens):
                         lex_tokens.append([character,";"])
                         mc_state = "s_header_state"
                     elif character == "=":
+                        
                         lex_tokens.append([character,"relacao"])
                         mc_state = "s_header_state"
                     elif character == ".":
@@ -135,7 +138,8 @@ def get_lex_token(character, num_character, lex_tokens):
                     elif character == ">":
                         mc_state = "s_maior_que"
                     elif character == ":":
-                        lex_tokens.append([":",":"])
+                        
+                        # lex_tokens.append([":",":"])
                         mc_state = "s_dois_pontos"
                     
                     #operadores matematicos
@@ -189,6 +193,7 @@ def get_lex_token(character, num_character, lex_tokens):
                         lex_tokens.append([character,";"])
                         mc_state = "s_header_state"
                     elif character == "=":
+                        
                         lex_tokens.append([character,"relacao"])
                         mc_state = "s_header_state"
                     elif character == ".":
@@ -199,9 +204,10 @@ def get_lex_token(character, num_character, lex_tokens):
                     elif character == ">":
                         mc_state = "s_maior_que"
                     elif character == ":":
-                        lex_tokens.append([":",":"])
                         mc_state = "s_dois_pontos"
-                    
+                        # lex_tokens.append([":",":"])
+                        print(f"alt10 -- indo para o estado {mc_state}")
+                        
                     #operadores matematicos
                     elif character == "+":
                         lex_tokens.append([character, "op_ad"])
@@ -277,25 +283,18 @@ def get_lex_token(character, num_character, lex_tokens):
                 comment = comment + character
                 mc_state = "s_abre_coment"
 
-        #NOTE cases de operadores relacionais funcionando
-        case "s_mais_var":
-            lex_tokens.append([",", "mais_var"])
-            mc_state = "s_header_state"
-        
-        case "s_mais_ident":
-            lex_tokens.append([";", ";"])
-            mc_state = "s_header_state"
-
         case "s_dois_pontos":
-            if "=" in character:
-                lex_tokens.pop()
+            print(f"alt11 -- cheguei no estado {mc_state}") 
+            if character == "=":
+                # lex_tokens.pop()
                 lex_tokens.append([":=",":="])
                 mc_state =  "s_header_state"
             else: 
                 lex_tokens.append([":",":"])
                 mc_state =  "s_header_state"
         case "s_menor_que":
-            if "=" in character:
+            if character == "=":
+                
                 lex_tokens.append(["<=","relacao"])        
                 mc_state = "s_header_state"
             elif ">" in character:
@@ -306,6 +305,7 @@ def get_lex_token(character, num_character, lex_tokens):
                 mc_state = "s_header_state"
         case "s_maior_que":
             if character == "=":
+                
                 lex_tokens.append([">=","relacao"])
                 mc_state = "s_header_state"
             else:
